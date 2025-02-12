@@ -2,13 +2,16 @@ name: Build Hasura Binary
 
 on:
   push:
-    branches: [ "**" ]
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -22,3 +25,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y gcc make musl-dev
+
+      - name: Build Hasura
+        run: |
+          make build
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hasura-binary
+          path: bin/hasura
