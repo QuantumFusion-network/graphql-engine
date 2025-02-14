@@ -2,11 +2,8 @@ name: Build Hasura Binary
 
 on:
   push:
-    branches:
-      - qf-ge-ci
-  pull_request:
-    branches:
-      - qf-ge-ci
+    tags:
+      - "*"
   workflow_dispatch:
 
 jobs:
@@ -15,6 +12,15 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Extract Tag Version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Set CURRENT_VERSION
+        run: echo "$VERSION" > server/CURRENT_VERSION
 
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -26,17 +32,83 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Dependencies
+      - name: Install System Dependencies
         run: |
           sudo apt update
-          sudo apt install -y gcc make musl-dev
+          sudo apt install -y gcc make musl-dev curl unixodbc-dev
 
-      - name: Build Hasura
+      - name: Setup Haskell (GHC & Cabal)
+        uses: haskell/actions/setup@v2
+        with:
+          ghc-version: '9.2'
+          cabal-version: '3.12'
+
+      - name: Cache Cabal Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cabal/store
+            dist-newstyle
+            server/dist-newstyle
+          key: ${{ runner.os }}-cabal-${{ hashFiles('cabal.project.freeze') }}
+          restore-keys: |
+            ${{ runner.os }}-cabal-
+
+      - name: Install Haskell Dependencies
         run: |
-          make build
+          cabal update
+          cabal build all --only-dependencies
 
-      - name: Upload Artifact
+      - name: Build GraphQL Engine
+        run: cabal build exe:graphql-engine
+
+      - name: Copy README.md to server/
+        run: cp README.md server/
+
+      - name: Build Executable Binary
+        run: |
+          mkdir -p artifacts
+          cabal install exe:graphql-engine --installdir=artifacts
+          mv artifacts/graphql-engine artifacts/graphql-engine-$VERSION
+
+      - name: Upload Binary Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: hasura-binary
-          path: bin/hasura
+          name: graphql-engine
+          path: artifacts/graphql-engine-*
+
+  build_docker:
+    needs: build
+    name: Build and Publish Docker Image
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download Binary Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: graphql-engine
+          path: ./artifacts
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PAT }}
+
+      - name: Build and Tag Docker Image
+        run: |
+          cd docker
+          docker build -f Dockerfile.x86_64 -t qf-node:${{ github.ref_name }} .
+          docker tag qf-node:${{ github.ref_name }} qfnetwork/qf-node:${{ github.ref_name }}
+          docker tag qf-node:${{ github.ref_name }} qfnetwork/qf-node:latest
+
+      - name: Push Docker Image to Docker Hub (signed)
+        env:
+          DOCKER_CONTENT_TRUST: "1"
+          DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE: ${{ secrets.DCT_ROOT_PASSPHRASE }}
+          DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: ${{ secrets.DCT_REPO_PASSPHRASE }}
+        run: |
+          docker push qfnetwork/qf-node:${{ github.ref_name }}
+          docker push qfnetwork/qf-node:latest
