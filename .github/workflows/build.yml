@@ -112,7 +112,6 @@ jobs:
         run: |
           ls -l
           pwd
-          cd server
           docker build -t graphql-engine:${{ github.ref_name }} -f server/Dockerfile server/
           docker tag graphql-engine:${{ github.ref_name }} qfnetwork/graphql-engine:${{ github.ref_name }}
           docker tag graphql-engine:${{ github.ref_name }} qfnetwork/graphql-engine:latest          
