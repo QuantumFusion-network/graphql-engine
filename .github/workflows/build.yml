@@ -105,12 +105,15 @@ jobs:
       - name: List Downloaded Artifacts
         run: ls -l artifacts/
 
+      - name: Check server/Dockerfile
+        run: ls -l server/
+
       - name: Build and Tag Docker Image
         run: |
           ls -l
           pwd
           cd server
-          docker build -t graphql-engine:${{ github.ref_name }} -f server/Dockerfile .
+          docker build -t graphql-engine:${{ github.ref_name }} -f server/Dockerfile server/
           docker tag graphql-engine:${{ github.ref_name }} qfnetwork/graphql-engine:${{ github.ref_name }}
           docker tag graphql-engine:${{ github.ref_name }} qfnetwork/graphql-engine:latest          
 
