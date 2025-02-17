@@ -107,8 +107,10 @@ jobs:
 
       - name: Build and Tag Docker Image
         run: |
+          ls -l
+          pwd
           cd server
-          docker build -f server/Dockerfile -t graphql-engine:${{ github.ref_name }} .
+          docker build -t graphql-engine:${{ github.ref_name }} -f server/Dockerfile .
           docker tag graphql-engine:${{ github.ref_name }} qfnetwork/graphql-engine:${{ github.ref_name }}
           docker tag graphql-engine:${{ github.ref_name }} qfnetwork/graphql-engine:latest          
 
