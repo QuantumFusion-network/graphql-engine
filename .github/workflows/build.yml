@@ -125,5 +125,5 @@ jobs:
           DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE: ${{ secrets.DCT_ROOT_PASSPHRASE }}
           DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: ${{ secrets.DCT_REPO_PASSPHRASE }}
         run: |
-          docker push qfnetwork/qf-node:${{ github.ref_name }}
-          docker push qfnetwork/qf-node:latest
+          docker push qfnetwork/graphql-engine:${{ github.ref_name }}
+          docker push qfnetwork/graphql-engine:latest
