@@ -100,8 +100,8 @@ jobs:
       - name: Create Fake Binary
         run: |
           mkdir -p artifacts
-          echo "fake binary" > artifacts/graphql-engine
-          chmod +x artifacts/graphql-engine
+          echo "fake binary" > artifacts/graphql-engine-1
+          chmod +x artifacts/graphql-engine-1
 
 
       - name: List Downloaded Artifacts
