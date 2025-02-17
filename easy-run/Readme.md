@@ -1,4 +1,4 @@
-# Создать новую таблицу
+# Create new table
 curl -X POST http://localhost:8080/v1/query \
 -H "Content-Type: application/json" \
 -H "x-hasura-admin-secret: mysecretkey" \
@@ -10,7 +10,7 @@ curl -X POST http://localhost:8080/v1/query \
 }
 }'
 
-# Добавить таблицу в отслеживаемые Hasura
+# Add table to hasura
 curl -X POST http://localhost:8080/v1/metadata \
 -H "Content-Type: application/json" \
 -H "x-hasura-admin-secret: mysecretkey" \
@@ -25,13 +25,13 @@ curl -X POST http://localhost:8080/v1/metadata \
 }
 }'
 
-# Проверить (вернуть) отслеживаемые таблицы
+# Check tracked tables
 curl -X POST http://localhost:8080/v1/graphql \
 -H "Content-Type: application/json" \
 -H "x-hasura-admin-secret: mysecretkey" \
 --data '{"query":"{ __type(name: \"query_root\") { fields { name } } }"}'
 
-# Добавление новой записи
+# Add new record
 curl -X POST http://localhost:8080/v1/query \
 -H "Content-Type: application/json" \
 -H "x-hasura-admin-secret: mysecretkey" \
@@ -43,7 +43,7 @@ curl -X POST http://localhost:8080/v1/query \
 }
 }'
 
-# Вернуть все строки
+# Return all records
 curl -X POST http://localhost:8080/v1/graphql \
 -H "Content-Type: application/json" \
 -H "x-hasura-admin-secret: mysecretkey" \
