@@ -91,11 +91,18 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PAT }}
 
-      - name: Download Built Binary
-        uses: actions/download-artifact@v4
-        with:
-          name: graphql-engine
-          path: artifacts/
+#      - name: Download Built Binary
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: graphql-engine
+#          path: artifacts/
+
+      - name: Create Fake Binary
+        run: |
+          mkdir -p artifacts
+          echo "fake binary" > artifacts/graphql-engine
+          chmod +x artifacts/graphql-engine
+
 
       - name: List Downloaded Artifacts
         run: ls -l artifacts/
