@@ -102,6 +102,9 @@ jobs:
           mv artifacts/graphql-engine-* artifacts/graphql-engine
           chmod +x artifacts/graphql-engine
 
+      - name: List Downloaded Artifacts
+        run: ls -l artifacts/
+
       - name: Build and Tag Docker Image
         run: |
           cd server
