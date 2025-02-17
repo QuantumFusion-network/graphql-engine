@@ -119,11 +119,7 @@ jobs:
           docker tag graphql-engine:${{ github.ref_name }} qfnetwork/graphql-engine:${{ github.ref_name }}
           docker tag graphql-engine:${{ github.ref_name }} qfnetwork/graphql-engine:latest          
 
-      - name: Push Docker Image to Docker Hub (signed)
-        env:
-          DOCKER_CONTENT_TRUST: "1"
-          DOCKER_CONTENT_TRUST_ROOT_PASSPHRASE: ${{ secrets.DCT_ROOT_PASSPHRASE }}
-          DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE: ${{ secrets.DCT_REPO_PASSPHRASE }}
+      - name: Push Docker Image to Docker Hub
         run: |
           docker push qfnetwork/graphql-engine:${{ github.ref_name }}
           docker push qfnetwork/graphql-engine:latest
