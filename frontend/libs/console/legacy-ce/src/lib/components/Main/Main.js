@@ -367,18 +367,8 @@ class Main extends React.Component {
           metadata={metadata.metadataObject}
         />
         <div className={styles.flexRow}>
-          <div className="font-sans bg-slate-700 text-slate-100 flex h-16">
+          <div style={{background: '#3c3c3c'}} className="font-sans text-slate-100 flex h-16">
             <div className="flex gap-1 flex-grow">
-              <div className="px-5 py-2 flex items-center gap-3">
-                <Link to="/">
-                  <img className="w-24" src={logo} alt="" />
-                </Link>
-                <Link to="/">
-                  <div className="text-white text-xs max-w-[128px]">
-                    {serverVersion}
-                  </div>
-                </Link>
-              </div>
               <ul className="flex gap-2" data-testid="Nav bar">
                 <HeaderNavItem
                   title="API"
@@ -447,45 +437,45 @@ class Main extends React.Component {
                   </Link>
                 </div>
                 {/* Compensate legacy styles directly with style attribute */}
-                <div className={styles.proWrapper} style={{ padding: '0' }}>
-                  <div className={itemContainerStyle}>
-                    <div
-                      className={clsx(
-                        linkStyle,
-                        isPopUpOpen && activeLinkStyle
-                      )}
-                      onClick={this.onProIconClick}
-                    >
-                      <span className="text-sm self-baseline">
-                        <FaInfoCircle />
-                      </span>
-                      <span className="uppercase text-left">CLOUD</span>
-                    </div>
-                  </div>
-                  {isPopUpOpen && <ProPopup toggleOpen={this.toggleProPopup} />}
-                </div>
+                {/*<div className={styles.proWrapper} style={{ padding: '0' }}>*/}
+                {/*  <div className={itemContainerStyle}>*/}
+                {/*    <div*/}
+                {/*      className={clsx(*/}
+                {/*        linkStyle,*/}
+                {/*        isPopUpOpen && activeLinkStyle*/}
+                {/*      )}*/}
+                {/*      onClick={this.onProIconClick}*/}
+                {/*    >*/}
+                {/*      <span className="text-sm self-baseline">*/}
+                {/*        <FaInfoCircle />*/}
+                {/*      </span>*/}
+                {/*      <span className="uppercase text-left">CLOUD</span>*/}
+                {/*    </div>*/}
+                {/*  </div>*/}
+                {/*  {isPopUpOpen && <ProPopup toggleOpen={this.toggleProPopup} />}*/}
+                {/*</div>*/}
 
-                <Help isSelected={currentActiveBlock === 'support'} />
-                <NotificationSection
-                  isDropDownOpen={this.state.isDropdownOpen}
-                  closeDropDown={this.closeDropDown}
-                  toggleDropDown={this.toggleDropDown}
-                />
-                {!this.state.loveConsentState.isDismissed ? (
-                  <div className="bootstrap-jail">
-                    <div
-                      id="dropdown_wrapper"
-                      className={`self-stretch h-full ${
-                        this.state.isLoveSectionOpen ? 'open' : ''
-                      }`}
-                    >
-                      <LoveSection
-                        closeLoveSection={this.closeLoveSection}
-                        toggleLoveSection={this.toggleLoveSection}
-                      />
-                    </div>
-                  </div>
-                ) : null}
+                {/*<Help isSelected={currentActiveBlock === 'support'} />*/}
+                {/*<NotificationSection*/}
+                {/*  isDropDownOpen={this.state.isDropdownOpen}*/}
+                {/*  closeDropDown={this.closeDropDown}*/}
+                {/*  toggleDropDown={this.toggleDropDown}*/}
+                {/*/>*/}
+                {/*{!this.state.loveConsentState.isDismissed ? (*/}
+                {/*  <div className="bootstrap-jail">*/}
+                {/*    <div*/}
+                {/*      id="dropdown_wrapper"*/}
+                {/*      className={`self-stretch h-full ${*/}
+                {/*        this.state.isLoveSectionOpen ? 'open' : ''*/}
+                {/*      }`}*/}
+                {/*    >*/}
+                {/*      <LoveSection*/}
+                {/*        closeLoveSection={this.closeLoveSection}*/}
+                {/*        toggleLoveSection={this.toggleLoveSection}*/}
+                {/*      />*/}
+                {/*    </div>*/}
+                {/*  </div>*/}
+                {/*) : null}*/}
               </div>
             </div>
           </div>
