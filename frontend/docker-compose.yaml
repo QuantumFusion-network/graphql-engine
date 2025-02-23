@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: development
+        NX_CDN_ASSETS: false
+        NX_ENABLE_TELEMETRY: false
+        NX_URL_PREFIX: /
+        NX_DATA_API_URL: https://scan.qfnetwork.xyz
+        NX_SERVER_VERSION: v1.0.0
+        NX_CONSOLE_MODE: server
+        NX_HASURA_CONSOLE_TYPE: oss
+    environment:
+      NODE_ENV: development
+      NX_CDN_ASSETS: false
+      NX_ENABLE_TELEMETRY: false
+      NX_URL_PREFIX: /
+      NX_DATA_API_URL: https://scan.qfnetwork.xyz
+      NX_SERVER_VERSION: v1.0.0
+      NX_CONSOLE_MODE: server
+      NX_HASURA_CONSOLE_TYPE: oss
+    ports:
+      - "4200:80"
+    env_file:
+      - .env
+  
