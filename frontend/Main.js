@@ -508,7 +508,7 @@ const mapStateToProps = (state, ownProps) => {
     schemaList: state.tables.schemaList,
     pathname: ownProps.location.pathname,
     inconsistentInheritedRole:
-      state.tables.modify.permissionsState.inconsistentInhertiedRole,
+    state.tables.modify.permissionsState.inconsistentInhertiedRole,
   };
 };
 
